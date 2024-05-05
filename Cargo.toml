@@ -1,0 +1,14 @@
+[package]
+name = "rust_cli_for_npx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+
+[package.metadata.npm]
+package = "rust_cli_for_npx"
+description = "My awesome CLI"
+repository = "https://github.com/ArnavK-09/rust_cli_for_npx"
+version = "0.1.0"
+bin = { "rust_cli_for_npx" = "./target/release/rust_cli_for_npx" }
