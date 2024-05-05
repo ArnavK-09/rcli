@@ -1,0 +1,6 @@
+{
+  "name": "rust_cli_for_npx",
+  "bin": {
+    "rust_cli_for_npx": "../target/release/rust_cli_for_npx"
+  }
+}

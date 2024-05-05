@@ -6,11 +6,3 @@ edition = "2021"
 [dependencies]
 crossterm = "0.27.0"
 ratatui = "0.26.2"
-
-
-[package.metadata.npm]
-package = "rust_cli_for_npx"
-description = "My Awesome Rust CLI"
-repository = "https://github.com/ArnavK-09/rust_cli_for_npx"
-version = "0.1.0"
-bin = { "rust_cli_for_npx" = "./target/release/rust_cli_for_npx" }

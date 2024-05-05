@@ -1,6 +1,8 @@
 name: Publish to npm
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
@@ -15,7 +17,7 @@ jobs:
     name: Publish to npm
     runs-on: ubuntu-latest
     steps:
-    
+
       - name: Install Rust
         uses: hecrj/setup-rust-action@v2
 
