@@ -15,8 +15,9 @@ jobs:
     name: Publish to npm
     runs-on: ubuntu-latest
     steps:
+    
       - name: Install Rust
-      - uses: hecrj/setup-rust-action@v2
+        uses: hecrj/setup-rust-action@v2
 
       - name: Checkout repository
         uses: actions/checkout@v4
