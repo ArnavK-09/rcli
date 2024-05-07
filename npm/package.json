@@ -1,17 +1,17 @@
 {
   "name": "rust_cli_for_npx",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "bin": "index.js",
   "files": ["index.js"],
   "scripts": {
     "dev": "node index.js"
   },
   "optionalDependencies": {
-    "rust_cli_for_npx-linux-x64": "0.1.1",
-    "rust_cli_for_npx-linux-arm64": "0.1.1",
-    "rust_cli_for_npx-darwin-x64": "0.1.1",
-    "rust_cli_for_npx-darwin-arm64": "0.1.1",
-    "rust_cli_for_npx-windows-x64": "0.1.1",
-    "rust_cli_for_npx-windows-arm64": "0.1.1"
+    "rust_cli_for_npx-linux-x64": "0.1.2",
+    "rust_cli_for_npx-linux-arm64": "0.1.2",
+    "rust_cli_for_npx-darwin-x64": "0.1.2",
+    "rust_cli_for_npx-darwin-arm64": "0.1.2",
+    "rust_cli_for_npx-windows-x64": "0.1.2",
+    "rust_cli_for_npx-windows-arm64": "0.1.2"
   }
 }
