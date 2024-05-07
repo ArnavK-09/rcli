@@ -1,6 +1,7 @@
 name: Publish Our Package!
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
@@ -80,6 +81,7 @@ jobs:
       - name: Publish to NPM
         shell: bash
         run: |
+          npm help
           cd npm
           # set the binary name
           bin="app"
