@@ -126,7 +126,6 @@ jobs:
         shell: bash
         run: |
           cd npm
-          npm install
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
