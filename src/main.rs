@@ -1,42 +1,116 @@
-use crossterm::{
-    event::{self, KeyCode, KeyEventKind},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-};
+// Import required
+use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
-    prelude::{CrosstermBackend, Stylize, Terminal},
-    widgets::Paragraph,
+    prelude::*,
+    symbols::border,
+    widgets::{block::*, *},
 };
-use std::io::{stdout, Result};
+use std::io::{self};
 
-fn main() -> Result<()> {
-    stdout().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-    terminal.clear()?;
+// Custom
+mod terminal_user_interface;
 
-    loop {
-        terminal.draw(|frame| {
-            let area = frame.size();
-            frame.render_widget(
-                Paragraph::new("Hello NPM, From Rust & Ratatui! (press 'q' to quit)")
-                    .white()
-                    .centered()
-                    .on_black(),
-                area,
-            );
-        })?;
+// Our app class
+#[derive(Debug, Default)]
+pub struct TuiApp {
+    count: i8,
+    quit: bool,
+}
 
-        if event::poll(std::time::Duration::from_millis(16))? {
-            if let event::Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                    break;
-                }
+// Appending functions required
+impl TuiApp {
+    fn run(&mut self, tui: &mut terminal_user_interface::TUI) -> io::Result<()> {
+        while !self.quit {
+            let _ = tui.draw(|f| self.render_this_frame(f));
+            self.handle_all_events()?;
+        }
+        Ok(())
+    }
+
+    // Basic Functionalities
+
+    fn render_this_frame(&self, frame: &mut Frame) {
+        frame.render_widget(self, frame.size());
+    }
+
+    fn handle_all_events(&mut self) -> io::Result<()> {
+        match event::read()? {
+            Event::Key(key_event) if key_event.kind == KeyEventKind::Press => {
+                self.handle_event_for_key(key_event)
             }
+            _ => {}
+        };
+        Ok(())
+    }
+
+    fn handle_event_for_key(&mut self, e: KeyEvent) {
+        match e.code {
+            KeyCode::Char('q') => self.quit(),
+            KeyCode::Left => self.decrement(),
+            KeyCode::Right => self.increment(),
+            _ => {}
         }
     }
 
-    stdout().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())
+    // Input Commands
+
+    fn quit(&mut self) {
+        self.quit = true;
+    }
+
+    fn increment(&mut self) {
+        self.count += 1;
+    }
+
+    fn decrement(&mut self) {
+        self.count -= 1;
+    }
+}
+
+// Widget for demo app
+impl Widget for &TuiApp {
+    fn render(self, area: Rect, buf: &mut Buffer) {
+        let title = Title::from(" Counter App Demo Corss-platform CLI ".bold());
+        let instructions = Title::from(Line::from(vec![
+            " Decrement ".bold().blue(),
+            "<Left>".green().bold(),
+            " Increment ".bold().blue(),
+            "<Right>".green().bold(),
+            " Quit ".bold().blue(),
+            "<q> ".green().bold(),
+        ]));
+        let block = Block::default()
+            .title(title.alignment(Alignment::Center))
+            .title(
+                instructions
+                    .alignment(Alignment::Center)
+                    .position(Position::Bottom),
+            )
+            .borders(Borders::ALL)
+            .border_set(border::THICK);
+
+        let counter_render = Text::from(vec![Line::from(vec![
+            Span::styled("    ", Style::new()),
+            Span::styled(
+                "  Your Counter Value:-  ",
+                Style::new().fg(Color::White).bg(Color::Black).bold(),
+            ),
+            Span::styled("    ", Style::new()),
+            self.count.to_string().yellow().bold(),
+        ])]);
+
+        Paragraph::new(counter_render)
+            .centered()
+            .block(block)
+            .render(area, buf);
+    }
+}
+
+// Intializing App
+fn main() -> io::Result<()> {
+    // New tui
+    let mut terminal = terminal_user_interface::init_tui()?;
+    let terminal_app = TuiApp::default().run(&mut terminal);
+    terminal_user_interface::restore_tui()?;
+    terminal_app
 }
