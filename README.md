@@ -24,6 +24,12 @@ npx rust_cli_for_npx
 
 This command will execute the CLI packaged and published to npm via this template.
 
+# 🐫 Preview
+
+![image](https://github.com/ArnavK-09/rust_cli_for_npx/assets/69188140/08d5f412-3900-48a5-bb2d-ea13de1bd162)
+
+
+
 ## 🍄 Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
